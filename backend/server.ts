@@ -8,7 +8,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", // your Next.js app
+  credentials: true                // allow cookies
+}));
+
 app.use(express.json());
 
 app.get('/api/health', (req: Request, res: Response) => {

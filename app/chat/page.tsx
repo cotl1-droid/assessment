@@ -16,10 +16,15 @@ export default function Chat() {
       setMessages(prev => [...prev, msg]);
     });
 
-    // Check subscription
-    axios.get("/api/user/me").then(res => {
-      setCanSend(res.data.subscription === "pro");
-    });
+    // Make sure cookies are sent with the request
+    axios
+      .get("/api/user/me", { withCredentials: true })
+      .then(res => {
+        setCanSend(res.data.subscription === "pro");
+      })
+      .catch(err => {
+        console.error("Failed to fetch user:", err.response?.data || err.message);
+      });
 
     return () => socket.disconnect();
   }, []);

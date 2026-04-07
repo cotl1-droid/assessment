@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Stripe Chat App - Deployment Assessment
 
-## Getting Started
+Overview
 
-First, run the development server:
+This project is a SaaS-style chat application built with Next.js (frontend), Express + Socket.IO (backend), MongoDB (database), and Stripe (billing). Free users can read messages, while Pro users can send messages in real time.
 
-```bash
+Features
+
+Authentication: JWT-based login with cookies.
+
+Subscriptions: Stripe integration for Free vs Pro tiers.
+
+Chat: Real-time global chat powered by Socket.IO.
+
+Database: MongoDB for user persistence.
+
+Deployment: Next.js on Vercel, Express backend on Render, MongoDB Atlas.
+
+Project Structure
+
+/app → Next.js frontend pages and components.
+
+/app/api → Proxy routes forwarding requests to Express backend.
+
+/server → Express + Socket.IO backend.
+
+/models → Mongoose models.
+
+Environment Variables
+
+Set these in .env.local (Next.js) and Render (Express backend):
+
+MONGO_URI → MongoDB Atlas connection string.
+
+JWT_SECRET → Secret key for JWT signing.
+
+STRIPE_SECRET_KEY → Stripe API key.
+
+NEXT_PUBLIC_BACKEND_URL → Backend URL (Render deployment).
+
+Local Development
+
+Start MongoDB (Atlas or local).
+
+Run backend:
+
+cd server
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend runs on http://localhost:5000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Run frontend:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+cd app
+npm install
+npm run dev
 
-## Learn More
+Frontend runs on http://localhost:3000.
 
-To learn more about Next.js, take a look at the following resources:
+Login/Register → Cookie is set.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Chat → Free users read, Pro users send.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deployment
 
-## Deploy on Vercel
+Backend (Express + Socket.IO)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deploy to Render.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Build Command: npm install && npm run build
+
+Start Command: npm run start
+
+Environment variables: MONGO_URI, JWT_SECRET, STRIPE_SECRET_KEY.
+
+Render assigns a public URL (e.g. https://myapp-backend.onrender.com).
+
+Frontend (Next.js)
+
+Deploy to Vercel.
+
+Connect GitHub repo.
+
+Set environment variables in Vercel dashboard:
+
+NEXT_PUBLIC_BACKEND_URL=https://myapp-backend.onrender.com
+
+JWT_SECRET, STRIPE_SECRET_KEY (if needed client-side).
+
+Testing
+
+Visit Vercel deployment URL.
+
+Register/login.
+
+Verify cookie under yourapp.vercel.app domain.
+
+Call /api/user/me → should return user JSON.
+
+Enter chat → Free users can read, Pro users can send.
+
+Notes
+
+Ensure cookie-parser is enabled in Express.
+
+Use secure: false for cookies in local dev, secure: true in production.
+
+Proxy routes in Next.js forward requests to backend, ensuring same-origin cookies.
+
+Next Steps
+
+Add registration route to backend.
+
+Integrate Stripe subscription management.
+
+Proxy Socket.IO connection through Next.js for same-origin WebSocket traffic.
+
+License
+
+MIT
