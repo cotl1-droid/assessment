@@ -1,42 +1,48 @@
-Stripe Chat App - Deployment Assessment
+Stripe Chat App - Technical Assessment
 
 Overview
 
-This project is a SaaS-style chat application built with Next.js (frontend), Express + Socket.IO (backend), MongoDB (database), and Stripe (billing). Free users can read messages, while Pro users can send messages in real time.
+This project is a SaaS-style chat application built with Next.js (frontend), Express + Socket.IO (backend), MongoDB Atlas (database), and Stripe (billing). Free users can read messages, while Pro users can send messages in real time. The app is deployed with the frontend on Vercel and the backend on Render.
+
+Tech Stack
+
+Frontend: Next.js (React framework)
+
+Backend: Express.js + Socket.IO
+
+Database: MongoDB Atlas
+
+Payments: Stripe (test mode)
+
+Deployment: Vercel (frontend), Render (backend)
+
+Architecture & Decisions
+
+Database (MongoDB Atlas): Chosen for its flexible schema, easy cloud hosting, and strong ecosystem support. It allows quick prototyping and scaling without complex setup.
+
+Real-time (Socket.IO): Selected for its seamless integration with Express and reliable WebSocket support. It simplifies broadcasting messages to all connected clients.
 
 Features
 
-Authentication: JWT-based login with cookies.
+Authentication: JWT-based login with cookies, session persists on refresh.
 
-Subscriptions: Stripe integration for Free vs Pro tiers.
+Subscriptions: Stripe integration with Free and Pro tiers.
 
-Chat: Real-time global chat powered by Socket.IO.
-
-Database: MongoDB for user persistence.
+Chat: Real-time global chat room. Free users can read, Pro users can send.
 
 Deployment: Next.js on Vercel, Express backend on Render, MongoDB Atlas.
 
-Project Structure
-
-/app → Next.js frontend pages and components.
-
-/app/api → Proxy routes forwarding requests to Express backend.
-
-/server → Express + Socket.IO backend.
-
-/models → Mongoose models.
-
 Environment Variables
 
-Set these in .env.local (Next.js) and Render (Express backend):
+Set these in .env.local (Next.js) and in Render (backend):
 
-MONGO_URI → MongoDB Atlas connection string.
+MONGO_URI → MongoDB Atlas connection string
 
-JWT_SECRET → Secret key for JWT signing.
+JWT_SECRET → Secret key for JWT signing
 
-STRIPE_SECRET_KEY → Stripe API key.
+STRIPE_SECRET_KEY → Stripe API key (test mode)
 
-NEXT_PUBLIC_BACKEND_URL → Backend URL (Render deployment).
+NEXT_PUBLIC_BACKEND_URL → Backend URL (Render deployment)
 
 Local Development
 
@@ -88,33 +94,23 @@ NEXT_PUBLIC_BACKEND_URL=https://myapp-backend.onrender.com
 
 JWT_SECRET, STRIPE_SECRET_KEY (if needed client-side).
 
-Testing
+Stripe Testing
 
-Visit Vercel deployment URL.
+Use the following Stripe test card:
 
-Register/login.
+4242 4242 4242 4242
+Exp: any future date
+CVC: any 3 digits
 
-Verify cookie under yourapp.vercel.app domain.
+Known Limitations & Improvements
 
-Call /api/user/me → should return user JSON.
+Registration route not yet implemented.
 
-Enter chat → Free users can read, Pro users can send.
+Stripe subscription cancellation not fully wired to billing portal.
 
-Notes
+Socket.IO proxying through Next.js could be added for same-origin WebSocket traffic.
 
-Ensure cookie-parser is enabled in Express.
-
-Use secure: false for cookies in local dev, secure: true in production.
-
-Proxy routes in Next.js forward requests to backend, ensuring same-origin cookies.
-
-Next Steps
-
-Add registration route to backend.
-
-Integrate Stripe subscription management.
-
-Proxy Socket.IO connection through Next.js for same-origin WebSocket traffic.
+UI is minimal; could be improved with better styling and responsiveness.
 
 License
 
